@@ -24,15 +24,18 @@ APPROACH
 
 •	A copy of WordPress has been downloaded from wordpress.org and is stored on a Github public repository called cloudsmart/mywordpress
 
-•	Deployment scripts used by CodeDeploy are stored in a directory called scripts 
+•	Deployment scripts used by CodeDeploy are stored in a directory called codedeploy under the scripts folder
 
-•	Infrastructure provisioning templates used by CloudFormation are stored in a directory called infrastructure
+•	Infrastructure provisioning templates used by CloudFormation are stored in a directory called cloudformation under the scripts folder
+
 ARCHITECTURE HIGHLIGHTS
 
 •	Two-tier application comprised of:
 
 •	Web Tier: Includes two EC2 instances spread across two Availability Zones. The EC2 instances are behind a classic load balancer (ELB) and are associated with an Auto Scaling Group to scale them up or down based on their CPU usage that’s being monitored by CloudWatch. 
+
 	Adds more instances (to the maximum of four instances) if CPU usage stays at or above 75% for five consecutive minutes
+
 	Removes extra instances (keeps minimum two instances) if CPU usage stays at 25% or lower for five consecutive minutes
 
 •	Data Tier: Includes MySQL database in RDS Multi-AZ configuration for high availability and fault tolerance
@@ -44,6 +47,7 @@ ARCHITECTURE HIGHLIGHTS
 •	Default: Allows all sort of communication between services inside the VPC, e.g. from EC2 instances to EFS
 
 •	Web Tier: Allows inbound traffic on HTTP:80, HTTPS:443, SSH:22 from the Internet. 
+
 	Note: SSH port 22 is open to the Internet intentionally for easier access since this is a demo. In real world scenarios it mush be locked down to specific IP address or IP range
 
 •	Data Tier: Allows inbound traffic on MySQL:3306 from Web Tier security group only
@@ -52,7 +56,7 @@ ARCHITECTURE HIGHLIGHTS
 
 DEPLOYMENT PROCEDURE
 
-•	Infrastructure
+•	Infrastructure Provisioning
 
 •	Make a local copy of the WordPress.template file located under cloudsmart/mywordpress/scripts/cloudformation
 
@@ -125,7 +129,7 @@ DEPLOYMENT PROCEDURE
 
 •	Remarks:
 
-•	Run one Infrastructure deployment first and then as many Code Deployment as needed
+•	Run single infrastructure deployment first and then as many code deployment as needed
 
 •	Infrastructure deployment creates a brand-new environment from scratch so any previous data in RDS and EFS will be lost
   
